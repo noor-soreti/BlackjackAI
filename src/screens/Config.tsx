@@ -5,7 +5,7 @@ import {WithSplashScreen} from './RootScreens/SplashScreen';
 import {getProfile, User} from '../Api/functions/user';
 import {storage} from '../Api/Storage';
 import {useQuery} from '@tanstack/react-query';
-import auth from '@react-native-firebase/auth';
+// import auth from '@react-native-firebase/auth';
 import DataContext from './DataContext';
 import AuthStack from '../navigation/AuthStack';
 import {PostHogProvider} from 'posthog-react-native';
@@ -60,11 +60,11 @@ const Config = () => {
   });
 
   const signOut = async () => {
-    await auth().signOut();
-    storage.clearAll();
-    await queryClient.invalidateQueries({queryKey: ['user']});
-    await queryClient.invalidateQueries({queryKey: ['week']});
-    await queryClient.invalidateQueries({queryKey: ['daily_task']});
+    // await auth().signOut();
+    // storage.clearAll();
+    // await queryClient.invalidateQueries({queryKey: ['user']});
+    // await queryClient.invalidateQueries({queryKey: ['week']});
+    // await queryClient.invalidateQueries({queryKey: ['daily_task']});
   };
 
   return (

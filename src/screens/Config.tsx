@@ -1,11 +1,11 @@
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, NavigationContainerRef} from '@react-navigation/native';
 import React, {createContext, useContext, useEffect, useRef} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {WithSplashScreen} from './RootScreens/SplashScreen';
 import {getProfile, User} from '../Api/functions/user';
 import {storage} from '../Api/Storage';
 import {useQuery} from '@tanstack/react-query';
-// import auth from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import DataContext from './DataContext';
 import AuthStack from '../navigation/AuthStack';
 import {PostHogProvider} from 'posthog-react-native';
@@ -38,7 +38,8 @@ Sentry.init({
 });
 
 const Config = () => {
-  const containerRef = useRef();
+  const containerRef = useRef<NavigationContainerRef<any>>(null);
+  
   useEffect(() => {
     async function init() {
       Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
@@ -54,17 +55,29 @@ const Config = () => {
     init();
   }, []);
 
+  useEffect(() => {
+    const checkFirebase = async () => {
+      try {
+        await auth().signInAnonymously();
+        console.log('Firebase initialized successfully');
+      } catch (error) {
+        console.error('Firebase initialization error:', error);
+      }
+    };
+    checkFirebase();
+  }, []);
+
   const {data, isLoading, isFetching, refetch} = useQuery({
     queryKey: ['user'],
     queryFn: getProfile,
   });
 
   const signOut = async () => {
-    // await auth().signOut();
-    // storage.clearAll();
-    // await queryClient.invalidateQueries({queryKey: ['user']});
-    // await queryClient.invalidateQueries({queryKey: ['week']});
-    // await queryClient.invalidateQueries({queryKey: ['daily_task']});
+    await auth().signOut();
+    storage.clearAll();
+    await queryClient.invalidateQueries({queryKey: ['user']});
+    await queryClient.invalidateQueries({queryKey: ['week']});
+    await queryClient.invalidateQueries({queryKey: ['daily_task']});
   };
 
   return (
@@ -73,7 +86,7 @@ const Config = () => {
         <NavigationContainer
           ref={containerRef}
           onReady={() => {
-            navigationIntegration.registerNavigationContainer(containerRef);
+            navigationIntegration.registerNavigationContainer(containerRef.current);
           }}>
           <PostHogProvider apiKey="phc_9CfblbEVXk3CQBflyMcbjckZbuDghAyi5dVY3Bn3WBl">
             <Context.Provider

@@ -43,10 +43,8 @@ const SignupScreen = ({
       });
       if (has) {
         GoogleSignin.configure({
-          webClientId:
-            '572578354967-rqt7oarc4npqj7cntb4hnh8f70qrr2v2.apps.googleusercontent.com',
-          iosClientId:
-            '572578354967-1df18traa2no5beadfu3vah6d4o00dd3.apps.googleusercontent.com',
+          webClientId: '877194942163-33u7ermee78t2eqfv4cbkmgaiqu757on.apps.googleusercontent.com',
+          iosClientId: '877194942163-33u7ermee78t2eqfv4cbkmgaiqu757on.apps.googleusercontent.com'
         });
       }
     }
@@ -104,6 +102,8 @@ const SignupScreen = ({
   // }, [isSuccess, data]);
 
   const onGooglePress = async () => {
+    console.log("google");
+    
     try {
       // Check if your device supports Google Play
       const has = await GoogleSignin.hasPlayServices({

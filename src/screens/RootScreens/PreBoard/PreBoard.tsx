@@ -19,7 +19,7 @@ const OnboardingScreen = ({
     const onboardingDisplay = [
         {
             title: (
-                <Text>Snap your hands and let AI find the best play.</Text>
+                <Text>Snap your fingers and let AI find the best play.</Text>
             ),
             image: require('../../../assets/Images/iphone_rotated_3x.png'),
             subText: (
